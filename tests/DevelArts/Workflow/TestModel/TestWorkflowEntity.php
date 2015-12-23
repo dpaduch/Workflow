@@ -1,14 +1,20 @@
 <?php
 
-namespace DevelArts\Workflow;
+namespace DevelArts\Workflow\TestModel;
 
-class TestWorkflowEntity implements WorkflowEntityInterface
+use DevelArts\Workflow;
+
+/**
+ * @WF\state TestState1 @ test-state-1
+ * @WF\state TestState2 @ test-state-2
+ */
+class TestWorkflowEntity implements Workflow\WorkflowEntityInterface
 {
     private $state;
 
     private $name;
 
-    public function setState(WorkflowState $state)
+    public function setState(Workflow\WorkflowState $state)
     {
         $this->state = $state;
     }

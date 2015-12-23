@@ -2,7 +2,7 @@
 
 namespace DevelArts\Workflow;
 
-require_once 'Model/TestWorkflowEntity.php';
+require_once 'TestModel/TestWorkflowEntity.php';
 
 class WorkflowTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,7 +67,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $state = clone $this->state;
         $state->addAction($this->action);
 
-        $entity = new TestWorkflowEntity();
+        $entity = new TestModel\TestWorkflowEntity();
         $entity->setState($state);
 
         $result = $workflow->{$this->actionName}($entity);
@@ -90,7 +90,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         $workflow = clone $this->workflow;
 
-        $entity = new TestWorkflowEntity();
+        $entity = new TestModel\TestWorkflowEntity();
         $workflow->{$this->actionName}($entity);
     }
 
@@ -101,7 +101,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     {
         $workflow = clone $this->workflow;
 
-        $entity = new TestWorkflowEntity();
+        $entity = new TestModel\TestWorkflowEntity();
         $entity->setState(clone $this->state);
 
         $workflow->undefined($entity);

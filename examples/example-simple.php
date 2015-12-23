@@ -53,4 +53,4 @@ $workflow->getState(OrderStatusEnum::SENT)->addAction($action);
 $order = new Order;
 $order->setState($workflow->getState(OrderStatusEnum::PLACED));
 
-run($workflow, $order);
+Example::run($workflow, $order);

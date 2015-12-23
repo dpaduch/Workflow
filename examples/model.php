@@ -2,6 +2,47 @@
 
 use DevelArts\Workflow;
 
+class Example
+{
+    const QUIT_KEY = 'q';
+
+    public static function run($workflow, $entity)
+    {
+        do {
+
+            if (isset($option)) {
+                $i = 1;
+                foreach ($state->getActions() as $action) {
+                    if (!$action->checkConstraints($entity)) {
+                        continue;
+                    }
+                    if ($i++ != $option) {
+                        continue;
+                    }
+                    $workflow->{$action->getName()}($entity);
+                }
+                echo "\n";
+            }
+
+            $state = $entity->getState();
+            echo "=== " . get_class($entity) . ': ' . $state->getLabel() . "\n\n";
+
+            $i = 1;
+
+            foreach ($state->getActions() as $action) {
+                if ($action->checkConstraints($entity)) {
+                    echo ' ' . $i++ . '. ' . $action->getLabel() . "\n";
+                }
+            }
+
+            echo ' ' . self::QUIT_KEY . '. Exit' . "\n\n";
+
+            echo 'What to do? ';
+
+        } while (($option = readline()) != self::QUIT_KEY);
+    }
+}
+
 class OrderStatusEnum
 {
     const PLACED = 1;
@@ -54,7 +95,7 @@ class OrderProcessAction implements Workflow\WorkflowExecutorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
-        echo "OrderPlaceAction\n";
+        echo "Processing order...\n";
     }
 }
 
@@ -62,6 +103,7 @@ class OrderProcessingConstraint implements Workflow\WorkflowConstraintInterface
 {
     public function check(Workflow\WorkflowEntityInterface $entity)
     {
+        // do not process order on sunday
         return date('W') != 0;
     }
 }
@@ -75,7 +117,7 @@ class OrderCancelAction implements Workflow\WorkflowExecutorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
-        echo "OrderPlaceAction\n";
+        echo "Canncelling order...\n";
     }
 }
 
@@ -88,6 +130,7 @@ class OrderCancelReasonObserver implements Workflow\WorkflowObserverInterface
     {
         echo 'Please enter the reason of cancellation: ';
         $entity->setCancelReason(readline());
+        echo "Thanks!\n";
     }
 }
 
@@ -97,7 +140,9 @@ class OrderCancelReasonObserver implements Workflow\WorkflowObserverInterface
 class OrderSendAction implements Workflow\WorkflowExecutorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
-    {}
+    {
+        echo "Sending order...\n";
+    }
 }
 
 /**
@@ -106,5 +151,7 @@ class OrderSendAction implements Workflow\WorkflowExecutorInterface
 class OrderCompleteAction implements Workflow\WorkflowExecutorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
-    {}
+    {
+        echo "Completing order...\n";
+    }
 }

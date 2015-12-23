@@ -2,9 +2,9 @@
 
 namespace DevelArts\Workflow;
 
-require_once 'Model/TestWorkflowEntity.php';
-require_once 'Model/TestWorkflowConstraint.php';
-require_once 'Model/TestWorkflowObserver.php';
+require_once 'TestModel/TestWorkflowEntity.php';
+require_once 'TestModel/TestWorkflowObserver.php';
+require_once 'TestModel/TestWorkflowConstraint.php';
 
 class WorkflowActionTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,8 +33,8 @@ class WorkflowActionTest extends \PHPUnit_Framework_TestCase
 
     public function testObserver()
     {
-        $observer = new TestWorkflowObserver();
-        $entity = new TestWorkflowEntity();
+        $observer = new TestModel\TestWorkflowObserver();
+        $entity = new TestModel\TestWorkflowEntity();
 
         $action = clone $this->action;
         $action->addObserver($observer);
@@ -46,8 +46,8 @@ class WorkflowActionTest extends \PHPUnit_Framework_TestCase
 
     public function testConstraint()
     {
-        $constraint = new TestWorkflowConstraint();
-        $entity = new TestWorkflowEntity();
+        $constraint = new TestModel\TestWorkflowConstraint();
+        $entity = new TestModel\TestWorkflowEntity();
 
         $action = clone $this->action;
         $action->addConstraint($constraint);

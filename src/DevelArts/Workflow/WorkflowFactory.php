@@ -9,6 +9,10 @@ class WorkflowFactory
      */
     protected $workflow;
 
+    /**
+     * @param Builder\BuilderInterface $builder
+     * @return \DevelArts\Workflow\Workflow
+     */
     public static function build(Builder\BuilderInterface $builder)
     {
         $factory = new self();

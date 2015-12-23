@@ -2,8 +2,7 @@
 
 namespace DevelArts\Workflow;
 
-require_once 'Model/TestWorkflowEntity.php';
-require_once 'Model/TestBuilder.php';
+require_once 'TestModel/TestBuilder.php';
 
 class WorkflowFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +18,7 @@ class WorkflowFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testBuild()
     {
-        $builder = new TestBuilder;
+        $builder = new TestModel\TestBuilder;
         $workflow = WorkflowFactory::build($builder);
         $this->assertTrue($workflow instanceof Workflow);
         $this->assertTrue($builder->isBuilded());
