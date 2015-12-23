@@ -5,7 +5,7 @@ tests:
 	vendor/bin/phpunit -c phpunit.xml tests
 
 tests-coverage:
-	vendor/bin/phpunit -c phpunit.xml --coverage-html docs/test-coverage tests
+	vendor/bin/phpunit -c phpunit.xml --coverage-html tests-coverage tests
 
 example:
 	php examples/example-simple.php
