@@ -6,7 +6,7 @@ use DevelArts\Workflow;
 
 $order = new Order;
 $builder = new Workflow\Builder\DocCommentBuilder($order);
-$workflow = Workflow\WorkflowFactory::create($builder);
+$workflow = Workflow\WorkflowFactory::build($builder);
 $order->setState($workflow->getState(OrderStatusEnum::PLACED));
 
 Example::run($workflow, $order);

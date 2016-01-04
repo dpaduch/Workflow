@@ -2,6 +2,11 @@
 
 namespace DevelArts\Workflow;
 
+/**
+ * Workflow action class to handle the action execution
+ *
+ * @author Dariusz Paduch <dariusz.paduch@gmail.com>
+ */
 class WorkflowAction
 {
     /**
@@ -20,9 +25,9 @@ class WorkflowAction
     protected $state;
 
     /**
-     * @var WorkflowExecutorInterface
+     * @var WorkflowMediatorInterface
      */
-    protected $executor;
+    protected $mediator;
 
     /**
      * @var WorkflowConstraintInterface[]
@@ -35,17 +40,20 @@ class WorkflowAction
     protected $observers = [];
 
     /**
-     * @param WorkflowState $state
-     * @param WorkflowExecutorInterface $executor
+     * @param string                    $name     Name of the action
+     * @param WorkflowState             $state    Final state of the action
+     * @param WorkflowMediatorInterface $mediator Mediator of the action
      */
-    public function __construct($name, WorkflowState $state, WorkflowExecutorInterface $executor = null)
+    public function __construct($name, WorkflowState $state, WorkflowMediatorInterface $mediator = null)
     {
         $this->name = $name;
         $this->state = $state;
-        $this->executor = $executor;
+        $this->mediator = $mediator;
     }
 
     /**
+     * Returns name of the action.
+     *
      * @return string
      */
     public function getName()
@@ -54,6 +62,10 @@ class WorkflowAction
     }
 
     /**
+     * Returns label of the action.
+     *
+     * ... or name if label not specified.
+     *
      * @return string
      */
     public function getLabel()
@@ -62,7 +74,9 @@ class WorkflowAction
     }
 
     /**
-     * @param string $label
+     * Sets label of the action.
+     *
+     * @param string $label Label
      */
     public function setLabel($label)
     {
@@ -70,7 +84,9 @@ class WorkflowAction
     }
 
     /**
-     * @param WorkflowConstraintInterface $constraint
+     * Adds constraint to the action.
+     *
+     * @param WorkflowConstraintInterface $constraint Constraint to add
      */
     public function addConstraint(WorkflowConstraintInterface $constraint)
     {
@@ -78,7 +94,9 @@ class WorkflowAction
     }
 
     /**
-     * @param WorkflowObserverInterface $observer
+     * Adds observer to action.
+     *
+     * @param WorkflowObserverInterface $observer Observer to add
      */
     public function addObserver(WorkflowObserverInterface $observer)
     {
@@ -86,7 +104,9 @@ class WorkflowAction
     }
 
     /**
-     * @param WorkflowEntityInterface $entity
+     * Process action.
+     *
+     * @param WorkflowEntityInterface $entity Entity to process
      */
     public function process(WorkflowEntityInterface $entity)
     {
@@ -96,7 +116,7 @@ class WorkflowAction
 
         $this->notify('before', $entity);
 
-        if (!$this->executor || $this->executor->execute($entity) !== false) {
+        if (!$this->mediator || $this->mediator->execute($entity) !== false) {
             $entity->setState($this->state);
         }
 
@@ -106,7 +126,10 @@ class WorkflowAction
     }
 
     /**
-     * @param WorkflowEntityInterface $entity
+     * Check constraints for entity.
+     *
+     * @param WorkflowEntityInterface $entity Entity to check
+     *
      * @return boolean
      */
     public function checkConstraints(WorkflowEntityInterface $entity)
@@ -120,10 +143,12 @@ class WorkflowAction
     }
 
     /**
-     * @param string $event
-     * @param WorkflowEntityInterface $entity
+     * Notify observers about event.
+     *
+     * @param string                  $event  Event name
+     * @param WorkflowEntityInterface $entity Processing entity
      */
-    protected  function notify($event, WorkflowEntityInterface $entity)
+    protected function notify($event, WorkflowEntityInterface $entity)
     {
         foreach ($this->observers as $observer) {
             $observer->$event($entity);

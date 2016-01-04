@@ -2,6 +2,11 @@
 
 namespace DevelArts\Workflow;
 
+/**
+ * Factory of the workflow
+ *
+ * @author Dariusz Paduch <dariusz.paduch@gmail.com>
+ */
 class WorkflowFactory
 {
     /**
@@ -10,7 +15,10 @@ class WorkflowFactory
     protected $workflow;
 
     /**
+     * Builds the workflow.
+     *
      * @param Builder\BuilderInterface $builder
+     *
      * @return \DevelArts\Workflow\Workflow
      */
     public static function build(Builder\BuilderInterface $builder)
@@ -30,6 +38,8 @@ class WorkflowFactory
     }
 
     /**
+     * Returns builded workflow.
+     *
      * @return Workflow
      */
     public function getWorkflow()
@@ -38,6 +48,8 @@ class WorkflowFactory
     }
 
     /**
+     * Adds array of states.
+     *
      * @param array $states
      */
     public function addStates(array $states)
@@ -48,8 +60,11 @@ class WorkflowFactory
     }
 
     /**
-     * @param string $name
-     * @param string $label
+     * Adds state.
+     *
+     * @param string $name  Name of the state
+     * @param string $label Label of the state
+     *
      * @return WorkflowState
      */
     public function addState($name, $label = null)
@@ -61,11 +76,14 @@ class WorkflowFactory
     }
 
     /**
-     * @param string $name
-     * @param WorkflowActionInterface $executor
+     * Creates new action in workflow.
+     *
+     * @param string                    $name     Name of new action
+     * @param WorkflowMediatorInterface $mediator Mediator class
+     *
      * @return WorkflowAction
      */
-    public function createAction($name, WorkflowState $state, WorkflowExecutorInterface $executor = null)
+    public function createAction($name, WorkflowState $state, WorkflowMediatorInterface $mediator = null)
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException('name of the action must be a string');
@@ -75,7 +93,7 @@ class WorkflowFactory
             throw new \InvalidArgumentException('name of the action must be only A-Z, 0-9 or _');
         }
 
-        $action = new WorkflowAction($name, $state, $executor);
+        $action = new WorkflowAction($name, $state, $mediator);
         return $action;
     }
 }

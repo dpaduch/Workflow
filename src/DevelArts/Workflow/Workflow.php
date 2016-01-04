@@ -2,6 +2,11 @@
 
 namespace DevelArts\Workflow;
 
+/**
+ * Worklfow class
+ *
+ * @author Dariusz Paduch <dariusz.paduch@gmail.com>
+ */
 class Workflow
 {
     /**
@@ -10,8 +15,11 @@ class Workflow
     protected $states = [];
 
     /**
-     * @param string $method
-     * @param array $args
+     * Process workflow.
+     *
+     * @param string $method Method to call
+     * @param array $args Arguments for call
+     *
      * @throws \InvalidArgumentException
      */
     public function __call($method, array $args = null)
@@ -34,7 +42,10 @@ class Workflow
     }
 
     /**
-     * @param WorkflowState $state
+     * Adds new workflow state.
+     *
+     * @param WorkflowState $state State object to add
+     *
      * @return \DevelArts\Workflow\Workflow
      */
     public function addState(WorkflowState $state)
@@ -44,7 +55,10 @@ class Workflow
     }
 
     /**
-     * @param string $name
+     * Returns workflow state object by name.
+     *
+     * @param string $name Name of requested state
+     *
      * @return WorkflowState
      */
     public function getState($name)
@@ -56,6 +70,8 @@ class Workflow
     }
 
     /**
+     * Returns array of workflow states.
+     *
      * @return WorkflowState[]
      */
     public function getStates()

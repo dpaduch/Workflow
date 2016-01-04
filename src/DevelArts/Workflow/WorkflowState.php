@@ -2,6 +2,11 @@
 
 namespace DevelArts\Workflow;
 
+/**
+ * Workflow state class.
+ *
+ * @author Dariusz Paduch <dariusz.paduch@gmail.com>
+ */
 class WorkflowState
 {
     /**
@@ -20,8 +25,8 @@ class WorkflowState
     protected $actions = [];
 
     /**
-     * @param string $name
-     * @param string $label
+     * @param string $name  Name of state
+     * @param string $label Label of state
      */
     public function __construct($name, $label = null)
     {
@@ -30,6 +35,8 @@ class WorkflowState
     }
 
     /**
+     * Returns name of state.
+     *
      * @return string
      */
     public function getName()
@@ -38,6 +45,8 @@ class WorkflowState
     }
 
     /**
+     * Returns label of state.
+     *
      * @return string
      */
     public function __toString()
@@ -46,6 +55,8 @@ class WorkflowState
     }
 
     /**
+     * Returns label of state.
+     *
      * @return string
      */
     public function getLabel()
@@ -54,6 +65,8 @@ class WorkflowState
     }
 
     /**
+     * Sets label of state.
+     *
      * @param string $label
      */
     public function setLabel($label)
@@ -62,6 +75,8 @@ class WorkflowState
     }
 
     /**
+     * Adds action for state.
+     *
      * @param WorkflowAction $action
      */
     public function addAction(WorkflowAction $action)
@@ -70,7 +85,10 @@ class WorkflowState
     }
 
     /**
+     * Returns action by name.
+     *
      * @param string $name
+     *
      * @return NULL|WorkflowAction
      */
     public function getAction($name)
@@ -82,6 +100,8 @@ class WorkflowState
     }
 
     /**
+     * Returns array of actions allowed for this state
+     *
      * @return WorkflowAction[]
      */
     public function getActions()
@@ -90,7 +110,10 @@ class WorkflowState
     }
 
     /**
+     * Generates state label by name
+     *
      * @param string $name
+     *
      * @return string
      */
     protected function generateLabel($name)

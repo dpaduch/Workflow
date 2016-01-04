@@ -4,6 +4,11 @@ namespace DevelArts\Workflow\Builder;
 
 use DevelArts\Workflow;
 
+/**
+ * Workflow builder based on class comments
+ *
+ * @author Dariusz Paduch <dariusz.paduch@gmail.com>
+ */
 class DocCommentBuilder implements BuilderInterface
 {
     /**
@@ -24,6 +29,9 @@ class DocCommentBuilder implements BuilderInterface
         $this->entity = $entity;
     }
 
+    /* (non-PHPdoc)
+     * @see \DevelArts\Workflow\Builder\BuilderInterface::build()
+     */
     public function build(Workflow\WorkflowFactory $factory)
     {
         $this->factory = $factory;
@@ -36,7 +44,9 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param string $comment
+     * Creates states objects.
+     *
+     * @param string $comment Data
      */
     protected function buildStates($comment)
     {
@@ -52,12 +62,16 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param string $comment
+     * Creates actions.
+     *
+     * @param string $comment Data
+     *
      * @throws \InvalidArgumentException
      */
     protected function buildActions($comment)
     {
-        if (!preg_match_all('/@WF\\\\action (([^\@]*) \@ )?(([a-zA-Z\/]*)\:\:)?([a-zA-Z]*) > (.*)/', $comment, $tags, PREG_SET_ORDER)) {
+        $pattern = '/@WF\\\\action (([^\@]*) \@ )?(([a-zA-Z\/]*)\:\:)?([a-zA-Z]*) > (.*)/';
+        if (!preg_match_all($pattern, $comment, $tags, PREG_SET_ORDER)) {
             return;
         }
 
@@ -80,15 +94,18 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param Workflow\WorkflowAction $action
-     * @param string $executor
+     * Configure action with mediator.
+     *
+     * @param Workflow\WorkflowAction $action   Workflow action to configure
+     * @param string                  $mediator Mediator class name
+     *
      * @return \Workflow\WorkflowAction
      */
-    protected function configureAction(Workflow\WorkflowAction $action, $executor)
+    protected function configureAction(Workflow\WorkflowAction $action, $mediator)
     {
         $workflow = $this->factory->getWorkflow();
 
-        $refClass = new \ReflectionClass($executor);
+        $refClass = new \ReflectionClass($mediator);
         $comment = $refClass->getDocComment();
 
         $this->buildActionStates($action, $comment);
@@ -99,8 +116,10 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param Workflow\WorkflowAction $action
-     * @param string $comment
+     * Creates states for action.
+     *
+     * @param Workflow\WorkflowAction $action  Workflow action to build states
+     * @param string                  $comment Data
      */
     protected function buildActionStates(Workflow\WorkflowAction $action, $comment)
     {
@@ -123,8 +142,10 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param Workflow\WorkflowAction $action
-     * @param string $comment
+     * Creates constraints for action.
+     *
+     * @param Workflow\WorkflowAction $action  Workflow action to build constraints
+     * @param string                  $comment Data
      */
     protected function buildActionConstraints(Workflow\WorkflowAction $action, $comment)
     {
@@ -138,8 +159,10 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param Workflow\WorkflowAction $action
-     * @param string $comment
+     * Creates observers for action.
+     *
+     * @param Workflow\WorkflowAction $action  Workflow action to build constraints
+     * @param string                  $comment Data
      */
     protected function buildActionObservers(Workflow\WorkflowAction $action, $comment)
     {
@@ -153,7 +176,10 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param string $class
+     * Creates constraint class by name.
+     *
+     * @param string $class Name of class
+     *
      * @return Workflow\WorkflowConstraintInterface
      */
     protected function createConstraint($class)
@@ -163,7 +189,10 @@ class DocCommentBuilder implements BuilderInterface
     }
 
     /**
-     * @param string $class
+     * Creates observer class by name.
+     *
+     * @param string $class Name of class
+     *
      * @return Workflow\WorkflowObserverInterface
      */
     protected function createObserver($class)

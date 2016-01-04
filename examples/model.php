@@ -91,7 +91,7 @@ class Order implements Workflow\WorkflowEntityInterface
  * @WF\ifstate OrderStatusEnum::CANCELED
  * @WF\constraint OrderProcessingConstraint
  */
-class OrderProcessAction implements Workflow\WorkflowExecutorInterface
+class OrderProcessAction implements Workflow\WorkflowMediatorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
@@ -113,7 +113,7 @@ class OrderProcessingConstraint implements Workflow\WorkflowConstraintInterface
  * @WF\ifstate OrderStatusEnum::PROCESSING
  * @WF\observer OrderCancelReasonObserver
  */
-class OrderCancelAction implements Workflow\WorkflowExecutorInterface
+class OrderCancelAction implements Workflow\WorkflowMediatorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
@@ -137,7 +137,7 @@ class OrderCancelReasonObserver implements Workflow\WorkflowObserverInterface
 /**
  * @WF\ifstate OrderStatusEnum::PROCESSING
  */
-class OrderSendAction implements Workflow\WorkflowExecutorInterface
+class OrderSendAction implements Workflow\WorkflowMediatorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
@@ -148,7 +148,7 @@ class OrderSendAction implements Workflow\WorkflowExecutorInterface
 /**
  * @WF\ifstate OrderStatusEnum::SENT
  */
-class OrderCompleteAction implements Workflow\WorkflowExecutorInterface
+class OrderCompleteAction implements Workflow\WorkflowMediatorInterface
 {
     public function execute(Workflow\WorkflowEntityInterface $entity)
     {
